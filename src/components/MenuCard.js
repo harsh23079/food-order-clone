@@ -2,39 +2,30 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import RestaurantMenuList from "./RestaurantMenuList";
 import Shimmer from "./Shimmer";
-import { MENU_CARD_API } from "../utils/constant";
-
+import useMenuCardData from "../utils/useMenuCardData";
 const MenuCard = () => {
-  // console.log("menucar");
   const [resData, SetresData] = useState([]);
   const [detailRes, SetDetailRes] = useState([]);
   const [isSelected, SetIsSelected] = useState(false);
   const [filterData, SetFilterData] = useState([]);
 
   const { id } = useParams();
+  const menuCardData = useMenuCardData(id);
+
   useEffect(() => {
-    fetchData();
-  }, []);
-  const fetchData = async () => {
-    const data = await fetch(MENU_CARD_API + id);
-    const json = await data.json();
-    SetresData(
-      json?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card
-        ?.card?.itemCards
+    const { itemCards } =
+      menuCardData?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]
+        ?.card?.card || {};
+    SetresData(itemCards || []);
+    SetDetailRes(menuCardData?.data?.cards[0]?.card?.card?.info);
+
+    const filterRes = itemCards?.filter(
+      (res) => res?.card?.info?.itemAttribute?.vegClassifier === "VEG"
     );
-    SetDetailRes(json?.data?.cards[0]?.card?.card?.info);
-
-    console.log(json);
-    const filterRes =
-      json?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card?.itemCards?.filter(
-        (res) => res?.card?.info?.itemAttribute?.vegClassifier === "VEG"
-      );
     SetFilterData(filterRes);
-  };
+  }, [menuCardData]);
 
-  console.log(isSelected);
-
-  if (resData?.length === 0) {
+  if (menuCardData === null) {
     return <Shimmer />;
   }
 
@@ -46,26 +37,26 @@ const MenuCard = () => {
           <div className="name-time">
             {" "}
             <div className="name-cuisine-container">
-              <div className="rest-name-menu">{detailRes.name}</div>
-              <span>{detailRes.cuisines.join(",")}</span>
+              <div className="rest-name-menu">{detailRes?.name}</div>
+              <span>{detailRes?.cuisines?.join(",")}</span>
             </div>
             <div className="address-time">
-              <div>{detailRes.areaName}</div>
-              <div> 🏍️ {detailRes.sla.lastMileTravelString}</div>
+              <div>{detailRes?.areaName}</div>
+              <div> 🏍️ {detailRes?.sla?.lastMileTravelString}</div>
             </div>
           </div>
 
           <div className="rating-container">
-            <div>{detailRes.avgRatingString} ⭐️</div>
-            <div>{detailRes.totalRatingsString}</div>
+            <div>{detailRes?.avgRatingString} ⭐️</div>
+            <div>{detailRes?.totalRatingsString}</div>
           </div>
         </div>
 
         <hr className="dot-line"></hr>
 
         <div className="time-price-container">
-          <div>⏱️ {detailRes.sla.slaString}</div>
-          <div>{detailRes.costForTwoMessage}</div>
+          <div>⏱️ {detailRes?.sla.slaString}</div>
+          <div>{detailRes?.costForTwoMessage}</div>
         </div>
 
         <div>

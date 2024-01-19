@@ -7,7 +7,7 @@ import About from "./src/components/About";
 import Contact from "./src/components/Contact";
 import Error from "./src/components/Error";
 import MenuCard from "./src/components/MenuCard";
-import AboutClass from "./src/components/AboutClass";
+// import AboutClass from "./src/components/AboutClass";
 
 const AppLayout = () => {
   return (
@@ -23,14 +23,14 @@ const routConfig = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-      // {
-      //   path: "/",
-      //   element: <Body />,
-      // },
       {
         path: "/",
-        element: <AboutClass />,
+        element: <Body />,
       },
+      // {
+      //   path: "/",
+      //   element: <AboutClass />,
+      // },
 
       {
         path: "/about",

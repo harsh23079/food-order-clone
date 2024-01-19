@@ -1,32 +1,27 @@
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
-import { SWIGGY_API } from "../utils/constant";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useResData from "../utils/useResData";
 
 const Body = () => {
-  // console.log("body render");
   const [restData, setrestData] = useState([]);
   const [SearchResult, setSearchResult] = useState("");
   const [FilterDataResult, setFilterDataResult] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const fetchData = async () => {
-    const data = await fetch(SWIGGY_API);
-    const json = await data.json();
-    console.log(json?.data);
-    setrestData(
-      json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilterDataResult(
-      json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-  };
+  const jsonData = useResData();
 
-  return restData?.length === 0 ? (
-    <Shimmer />
+  useEffect(() => {
+    const { restaurants } =
+      jsonData?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle || {};
+    setrestData(restaurants || []);
+    setFilterDataResult(restaurants || []);
+  }, [jsonData]);
+
+  return jsonData === null ? (
+    <>
+      <Shimmer />
+    </>
   ) : (
     <div className="body-container">
       <div className="search-container">
@@ -46,7 +41,6 @@ const Body = () => {
             });
             setFilterDataResult(filterData);
             console.log(filterData);
-            // console.log(SearchResult);
           }}
         >
           Search
