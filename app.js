@@ -13,7 +13,9 @@ const AppLayout = () => {
   return (
     <div>
       <Navbar />
-      <Outlet />
+      <div className="m-4">
+        <Outlet />
+      </div>
     </div>
   );
 };
