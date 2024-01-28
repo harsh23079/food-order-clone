@@ -54,7 +54,7 @@ const Body = () => {
           </div>
         </div>
         <button
-          className="search-box p-2 bg-gray-400 hover:bg-gray-300 rounded-lg"
+          className="search-box p-2 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% hover:shadow-2xl hover:text-white rounded-lg"
           onClick={() => {
             const filterData = restData.filter(
               (restdata) => restdata?.info.avgRating > 4.3

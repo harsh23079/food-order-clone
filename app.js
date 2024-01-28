@@ -7,15 +7,20 @@ import About from "./src/components/About";
 import Contact from "./src/components/Contact";
 import Error from "./src/components/Error";
 import MenuCard from "./src/components/MenuCard";
+import Cart from "./src/components/Cart";
+import { Provider } from "react-redux";
+import appStore from "./src/utils/appStore";
 // import AboutClass from "./src/components/AboutClass";
 
 const AppLayout = () => {
   return (
     <div>
-      <Navbar />
-      <div className="m-4">
-        <Outlet />
-      </div>
+      <Provider store={appStore}>
+        <Navbar />
+        <div className="m-4">
+          <Outlet />
+        </div>
+      </Provider>
     </div>
   );
 };
@@ -41,6 +46,10 @@ const routConfig = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
       },
       {
         path: "/restaurant/:id",

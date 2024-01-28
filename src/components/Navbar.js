@@ -2,13 +2,15 @@ import Imagelogo from "../../asset/img/foodorder.jpeg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [loginStatus, setLoginStatus] = useState("Login");
   const onlineStatus = useOnlineStatus();
+  const totalItem = useSelector((state) => state.cart.totalItem);
 
   return (
-    <div className="nav-container h-28 flex justify-between items-center bg-orange-300 border-b-2 border-black">
+    <div className="nav-container h-28 flex justify-between items-center bg-gradient-to-r from-black to-blue-500 border-b-2 border-black">
       <img
         className="nav-logo h-24 w-24 border-black border-2   rounded-full m-2"
         alt="pizza-logo"
@@ -33,7 +35,11 @@ const Navbar = () => {
               Contact Us
             </Link>
           </li>
-          <li className="hover:text-white cursor-pointer">Cart</li>
+          <li>
+            <Link to="/cart" className="hover:text-white">
+              Cart({totalItem})
+            </Link>
+          </li>
         </ul>
         <button
           onClick={() => {
@@ -41,7 +47,7 @@ const Navbar = () => {
               ? setLoginStatus("Log out")
               : setLoginStatus("Login");
           }}
-          className="border p-2 bg-red-600 hover:bg-red-400 hover:text-white rounded-lg "
+          className="border p-2 bg-blue-800 hover:bg-blue-400 hover:text-white rounded-lg "
         >
           {loginStatus}
         </button>
